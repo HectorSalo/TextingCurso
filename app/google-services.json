@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "211865050625",
+    "firebase_url": "https://textingcurso-c058c.firebaseio.com",
+    "project_id": "textingcurso-c058c",
+    "storage_bucket": "textingcurso-c058c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211865050625:android:1da35230f144bf8f612a00",
+        "android_client_info": {
+          "package_name": "com.skysam.hchirinos.textingcurso"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "211865050625-7dl2af3inidicrcr81e97enrdioisbl3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdjC8GvUAmKjql_XTvpiMv1NTki2kO7NU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "211865050625-7dl2af3inidicrcr81e97enrdioisbl3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
