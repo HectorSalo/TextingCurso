@@ -10,6 +10,6 @@ interface LoginView {
     fun openUILogin()
 
     fun showLoginSuccessfully(data: Intent)
-    fun showMessage()
+    fun showMessageStarting()
     fun showError(reaMsg: Int)
 }
