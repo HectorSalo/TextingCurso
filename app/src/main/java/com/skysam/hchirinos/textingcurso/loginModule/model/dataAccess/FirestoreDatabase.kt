@@ -1,5 +1,6 @@
 package com.skysam.hchirinos.textingcurso.loginModule.model.dataAccess
 
+import android.util.Log
 import com.skysam.hchirinos.textingcurso.R
 import com.skysam.hchirinos.textingcurso.common.model.EventErrorTypeListener
 import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseFirestoreAPI
@@ -14,14 +15,14 @@ class FirestoreDatabase {
         val values = HashMap<String, Any?>()
         values[UserConst.USERNAME] = user.username
         values[UserConst.EMAIL] = user.email
-        values[UserConst.PHOTO_URL] = user.photoUrl
+        values[UserConst.PHOTO_URL] = if (user.photoUrl != null) user.photoUrl else if (user.uri != null) user.uri.toString() else ""
 
-        FirebaseFirestoreAPI.getUserReferenceByUid(user.uid!!).update(values)
+        FirebaseFirestoreAPI.getUserReferenceByUid(user.uid!!).set(values)
     }
 
     fun checkUserExist(uid: String, listener: EventErrorTypeListener) {
         FirebaseFirestoreAPI.getUserReferenceByUid(uid).get().addOnSuccessListener { document ->
-            if (document == null) {
+            if (!document.exists()) {
                 listener.onError(LoginEventConst.USER_NOT_EXIST, R.string.login_error_user_exist)
             }
         }

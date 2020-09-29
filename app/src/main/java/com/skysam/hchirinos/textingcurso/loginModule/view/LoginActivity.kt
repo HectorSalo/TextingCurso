@@ -10,8 +10,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.skysam.hchirinos.textingcurso.R
 import com.skysam.hchirinos.textingcurso.databinding.ActivityLoginBinding
 import com.skysam.hchirinos.textingcurso.loginModule.LoginPresenterClass
-import com.skysam.hchirinos.textingcurso.mainModule.MainActivity
-import java.util.*
+import com.skysam.hchirinos.textingcurso.mainModule.view.MainActivity
 
 class LoginActivity : AppCompatActivity(), LoginView {
 

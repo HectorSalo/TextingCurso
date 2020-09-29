@@ -1,5 +1,6 @@
 package com.skysam.hchirinos.textingcurso.common.model.dataAccess
 
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -20,6 +21,18 @@ object FirebaseFirestoreAPI {
 
     fun getUserReferenceByUid(uid: String): DocumentReference {
         return getInstance().collection(PATH_USERS).document(uid)
+    }
+
+    fun getContactsReference(uid: String): CollectionReference {
+        return getUserReferenceByUid(uid).collection(PATH_CONTACTS)
+    }
+
+    fun getRequestReference(email: String) : CollectionReference {
+        return getInstance().collection(PATH_REQUESTS)
+    }
+
+    fun getUserReference() : CollectionReference {
+        return getInstance().collection(PATH_USERS)
     }
 
 
