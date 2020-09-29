@@ -4,8 +4,10 @@ import com.google.firebase.firestore.*
 import com.google.firebase.firestore.EventListener
 import com.skysam.hchirinos.textingcurso.R
 import com.skysam.hchirinos.textingcurso.common.UtilsCommon
+import com.skysam.hchirinos.textingcurso.common.model.BasicEventsCallback
 import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseFirestoreAPI
 import com.skysam.hchirinos.textingcurso.common.pojo.User
+import com.skysam.hchirinos.textingcurso.common.pojo.UserConst
 import java.util.*
 
 class FirestoreDatabase {
@@ -73,4 +75,52 @@ class FirestoreDatabase {
         FirebaseFirestoreAPI.getRequestReference(emailEncoded).addSnapshotListener(mRequestEventListener).remove()
     }
 
+    fun removeUser(friendUid: String, myUid: String, callback: BasicEventsCallback) {
+        FirebaseFirestoreAPI.getUsersReference().document(myUid).collection(FirebaseFirestoreAPI.PATH_CONTACTS).document(friendUid).delete()
+            .addOnSuccessListener {
+                FirebaseFirestoreAPI.getUsersReference().document(friendUid).collection(FirebaseFirestoreAPI.PATH_CONTACTS).document(myUid)
+                    .delete()
+                    .addOnSuccessListener { callback.onSuccess() }
+                    .addOnFailureListener { callback.onError() }
+            }
+            .addOnFailureListener { callback.onError() }
+    }
+
+    fun acceptRequest(user: User, myUser: User, callback: BasicEventsCallback) {
+        val userRequestMap = HashMap<String, Any?>()
+        userRequestMap[UserConst.USERNAME] = user.username
+        userRequestMap[UserConst.EMAIL] = user.email
+        userRequestMap[UserConst.PHOTO_URL] = user.photoUrl
+
+        val myUserMap = HashMap<String, Any?>()
+        myUserMap[UserConst.USERNAME] = myUser.username
+        myUserMap[UserConst.EMAIL] = myUser.email
+        myUserMap[UserConst.PHOTO_URL] = myUser.photoUrl
+
+        val emailEncoded = UtilsCommon.getEmailEncoded(myUser.email!!)
+
+        FirebaseFirestoreAPI.getUsersReference().document(user.uid!!).collection(FirebaseFirestoreAPI.PATH_CONTACTS).document(myUser.uid!!)
+            .set(myUserMap)
+            .addOnSuccessListener {
+                FirebaseFirestoreAPI.getUsersReference().document(myUser.uid!!).collection(FirebaseFirestoreAPI.PATH_CONTACTS).document(user.uid!!)
+                    .set(userRequestMap)
+                    .addOnSuccessListener {
+                        FirebaseFirestoreAPI.getRequestReference(emailEncoded).document(FirebaseFirestoreAPI.PATH_REQUESTS).collection(emailEncoded).document(user.uid!!)
+                            .delete()
+                            .addOnSuccessListener { callback.onSuccess() }
+                            .addOnFailureListener { callback.onError() }
+                    }
+                    .addOnFailureListener { callback.onError() }
+            }
+            .addOnFailureListener { callback.onError() }
+    }
+
+    fun denyRequest(user: User, myEmail: String, callback: BasicEventsCallback) {
+        val emailEncoded = UtilsCommon.getEmailEncoded(myEmail)
+
+        FirebaseFirestoreAPI.getRequestReference(emailEncoded).document(FirebaseFirestoreAPI.PATH_REQUESTS).collection(emailEncoded)
+            .document(user.uid!!).delete()
+            .addOnSuccessListener { callback.onSuccess() }
+            .addOnFailureListener { callback.onError() }
+    }
 }

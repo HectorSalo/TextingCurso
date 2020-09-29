@@ -2,7 +2,11 @@ package com.skysam.hchirinos.textingcurso.common.model.dataAccess
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firestore.v1.DocumentTransform
+import com.skysam.hchirinos.textingcurso.common.UtilsCommon
+import com.skysam.hchirinos.textingcurso.common.pojo.UserConst
 
 object FirebaseFirestoreAPI {
     const val SEPARATOR = "___&___"
@@ -31,9 +35,21 @@ object FirebaseFirestoreAPI {
         return getInstance().collection(PATH_REQUESTS)
     }
 
-    fun getUserReference() : CollectionReference {
+    fun getUsersReference() : CollectionReference {
         return getInstance().collection(PATH_USERS)
     }
 
+    fun updateMyLastConnection(online: Boolean, uid: String) {
+        updateMyLastConnection(online, "", uid)
+    }
+
+    fun updateMyLastConnection(online: Boolean, uidFriend: String, uid: String) {
+        val lastConnectionWith = "${UtilsCommon.ONLINE_VALUE}$SEPARATOR$uidFriend"
+        val timesTamp: String = FieldValue.serverTimestamp().toString()
+
+        val value = if (online) lastConnectionWith else timesTamp
+
+        getUserReferenceByUid(uid).update(UserConst.LAST_CONNECTION_WITH, value)
+    }
 
 }
