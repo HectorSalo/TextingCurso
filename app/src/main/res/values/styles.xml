@@ -7,15 +7,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme" parent="Messaggi.Theme"/>
+    <style name="AppTheme" parent="Messaggi.Theme" />
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <!-- FirebaseUI -->
     <style name="BlueTheme" parent="FirebaseUI">
@@ -47,12 +48,15 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:maxLines">1</item>
     </style>
+
     <style name="TextViewItemUser.Small">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
+
     <style name="TextViewItemUser.Medium">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
+
     <style name="TextViewItemUser.Large">
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
     </style>

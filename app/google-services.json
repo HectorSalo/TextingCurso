@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "211865050625-hg5gh7ak90slvuhce3h97dt1as7iaq3o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skysam.hchirinos.textingcurso",
+            "certificate_hash": "d827183ffa2847f9b61136ed17fedfabdf0dfd96"
+          }
+        },
+        {
           "client_id": "211865050625-rv108jmjmnouokps607m94n2e5u9n2rh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
