@@ -32,7 +32,7 @@ object FirebaseFirestoreAPI {
     }
 
     fun getRequestReference(email: String) : CollectionReference {
-        return getInstance().collection(PATH_REQUESTS)
+        return getInstance().collection(PATH_REQUESTS).document(PATH_REQUESTS).collection(email)
     }
 
     fun getUsersReference() : CollectionReference {

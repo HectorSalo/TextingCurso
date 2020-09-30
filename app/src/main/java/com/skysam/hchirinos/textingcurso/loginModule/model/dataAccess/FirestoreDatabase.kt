@@ -15,7 +15,7 @@ class FirestoreDatabase {
         val values = HashMap<String, Any?>()
         values[UserConst.USERNAME] = user.username
         values[UserConst.EMAIL] = user.email
-        values[UserConst.PHOTO_URL] = if (user.photoUrl != null) user.photoUrl else if (user.uri != null) user.uri.toString() else ""
+        values[UserConst.PHOTO_URL] = user.getPhotoValid()
 
         FirebaseFirestoreAPI.getUserReferenceByUid(user.uid!!).set(values)
     }

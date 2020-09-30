@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.content_user.view.*
 import kotlinx.android.synthetic.main.item_request.view.*
 import kotlinx.android.synthetic.main.item_request.view.tv_name
 
-class UserAdapter (private var mUsers: List<User>, private var listener: OnItemClickListener) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
+class UserAdapter (private var mUsers: ArrayList<User>, private var listener: OnItemClickListener) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
     private lateinit var mContext: Context
 
@@ -65,9 +65,32 @@ class UserAdapter (private var mUsers: List<User>, private var listener: OnItemC
             .error(R.drawable.ic_emoticon_sad)
             .placeholder(R.drawable.ic_emoticon_tongue)
 
-        Glide.with(mContext).load(user.photoUrl)
+        Glide.with(mContext).load(user.getPhotoValid())
             .apply(options).into(holder.imgPhoto)
     }
 
     override fun getItemCount(): Int = mUsers.size
+
+    fun add(user: User) {
+        if (!mUsers.contains(user)) {
+            mUsers.add(user)
+            notifyItemInserted(mUsers.size - 1)
+        } else {
+            update(user)
+        }
+    }
+
+    fun update(user: User) {
+        val index = mUsers.indexOf(user)
+        mUsers[index] = user
+        notifyItemChanged(index)
+    }
+
+    fun remove(user: User) {
+        if (mUsers.contains(user)) {
+            val index = mUsers.indexOf(user)
+            mUsers.removeAt(index)
+            notifyItemRemoved(index)
+        }
+    }
 }

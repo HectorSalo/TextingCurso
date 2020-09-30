@@ -40,7 +40,7 @@ class MainPresenterClass (private var mView: MainView?) : MainPresenter {
         onDestroy()
     }
 
-    override fun getCurentUser(): User {
+    override fun getCurrentUser(): User {
         return mInteractor.getCurrentUser()
     }
 

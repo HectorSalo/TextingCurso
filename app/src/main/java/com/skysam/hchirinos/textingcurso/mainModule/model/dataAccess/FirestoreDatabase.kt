@@ -1,5 +1,6 @@
 package com.skysam.hchirinos.textingcurso.mainModule.model.dataAccess
 
+import android.util.Log
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.EventListener
 import com.skysam.hchirinos.textingcurso.R
@@ -37,7 +38,7 @@ class FirestoreDatabase {
     }
 
     private fun getUser(value: DocumentChange): User {
-        val user = User()
+        val user = value.document.toObject(User::class.java)
         user.uid = value.document.id
         return user
     }
@@ -90,12 +91,12 @@ class FirestoreDatabase {
         val userRequestMap = HashMap<String, Any?>()
         userRequestMap[UserConst.USERNAME] = user.username
         userRequestMap[UserConst.EMAIL] = user.email
-        userRequestMap[UserConst.PHOTO_URL] = user.photoUrl
+        userRequestMap[UserConst.PHOTO_URL] = user.getPhotoValid()
 
         val myUserMap = HashMap<String, Any?>()
         myUserMap[UserConst.USERNAME] = myUser.username
         myUserMap[UserConst.EMAIL] = myUser.email
-        myUserMap[UserConst.PHOTO_URL] = myUser.photoUrl
+        myUserMap[UserConst.PHOTO_URL] = myUser.getPhotoValid()
 
         val emailEncoded = UtilsCommon.getEmailEncoded(myUser.email!!)
 
@@ -105,7 +106,7 @@ class FirestoreDatabase {
                 FirebaseFirestoreAPI.getUsersReference().document(myUser.uid!!).collection(FirebaseFirestoreAPI.PATH_CONTACTS).document(user.uid!!)
                     .set(userRequestMap)
                     .addOnSuccessListener {
-                        FirebaseFirestoreAPI.getRequestReference(emailEncoded).document(FirebaseFirestoreAPI.PATH_REQUESTS).collection(emailEncoded).document(user.uid!!)
+                        FirebaseFirestoreAPI.getRequestReference(emailEncoded).document(user.uid!!)
                             .delete()
                             .addOnSuccessListener { callback.onSuccess() }
                             .addOnFailureListener { callback.onError() }
@@ -118,7 +119,7 @@ class FirestoreDatabase {
     fun denyRequest(user: User, myEmail: String, callback: BasicEventsCallback) {
         val emailEncoded = UtilsCommon.getEmailEncoded(myEmail)
 
-        FirebaseFirestoreAPI.getRequestReference(emailEncoded).document(FirebaseFirestoreAPI.PATH_REQUESTS).collection(emailEncoded)
+        FirebaseFirestoreAPI.getRequestReference(emailEncoded)
             .document(user.uid!!).delete()
             .addOnSuccessListener { callback.onSuccess() }
             .addOnFailureListener { callback.onError() }

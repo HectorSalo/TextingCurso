@@ -21,6 +21,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" >
             
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_profile"
                 android:layout_width="@dimen/common_notify_size"
                 android:layout_height="@dimen/common_notify_size"
                 android:src="@drawable/ic_emoticon_happy"
@@ -31,7 +32,9 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include
+        android:id="@+id/include_main"
+        layout="@layout/content_main" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

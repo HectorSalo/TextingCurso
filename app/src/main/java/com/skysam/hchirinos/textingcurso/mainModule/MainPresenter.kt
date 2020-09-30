@@ -10,7 +10,7 @@ interface MainPresenter {
     fun onResume()
 
     fun signOff()
-    fun getCurentUser() : User
+    fun getCurrentUser() : User
     fun removedFriend(friendUser: String)
 
     fun acceptRequest(user: User)

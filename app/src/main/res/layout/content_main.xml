@@ -11,14 +11,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_requests"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingBottom="@dimen/common_padding_small"
         android:background="@color/colorBackgroundDark"
         tools:listitem="@layout/item_request"
-        app:layout_constraintHeight_default="wrap"
+        app:layout_constrainedHeight="true"
         app:layout_constraintHeight_max="@dimen/request_max_height"/>
 
     <androidx.recyclerview.widget.RecyclerView

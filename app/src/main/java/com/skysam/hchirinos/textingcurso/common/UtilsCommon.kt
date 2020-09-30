@@ -1,5 +1,11 @@
 package com.skysam.hchirinos.textingcurso.common
 
+import android.content.Context
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+
 object UtilsCommon {
 
     const val ONLINE = true
@@ -9,5 +15,13 @@ object UtilsCommon {
     fun getEmailEncoded(email: String) : String {
         val preKey = email.replace("_", "__")
         return preKey.replace(".", "_")
+    }
+
+    fun loadImage (context: Context, url: String, target: ImageView) {
+        val options = RequestOptions()
+        options.diskCacheStrategy(DiskCacheStrategy.ALL)
+            .centerCrop()
+
+        Glide.with(context).load(url).apply(options).into(target)
     }
 }

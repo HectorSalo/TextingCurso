@@ -61,6 +61,7 @@ dependencies {
     implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
