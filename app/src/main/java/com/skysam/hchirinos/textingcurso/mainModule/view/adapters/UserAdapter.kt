@@ -61,9 +61,10 @@ class UserAdapter (private var mUsers: ArrayList<User>, private var listener: On
         }
 
         val options = RequestOptions()
-        options.diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .error(R.drawable.ic_emoticon_sad)
             .placeholder(R.drawable.ic_emoticon_tongue)
+
 
         Glide.with(mContext).load(user.getPhotoValid())
             .apply(options).into(holder.imgPhoto)

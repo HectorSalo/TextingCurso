@@ -1,6 +1,7 @@
 package com.skysam.hchirinos.textingcurso.common
 
 import android.content.Context
+import android.os.Build
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -19,9 +20,13 @@ object UtilsCommon {
 
     fun loadImage (context: Context, url: String, target: ImageView) {
         val options = RequestOptions()
-        options.diskCacheStrategy(DiskCacheStrategy.ALL)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .centerCrop()
 
         Glide.with(context).load(url).apply(options).into(target)
+    }
+
+    fun hasMaterialDesing() : Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
     }
 }

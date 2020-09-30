@@ -9,13 +9,14 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.skysam.hchirinos.textingcurso.R
 import com.skysam.hchirinos.textingcurso.databinding.ActivityLoginBinding
+import com.skysam.hchirinos.textingcurso.loginModule.LoginPresenter
 import com.skysam.hchirinos.textingcurso.loginModule.LoginPresenterClass
 import com.skysam.hchirinos.textingcurso.mainModule.view.MainActivity
 
 class LoginActivity : AppCompatActivity(), LoginView {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var mPresenter: LoginPresenterClass
+    private lateinit var mPresenter: LoginPresenter
 
     object Const {
         const val RC_SIGN_IN = 21

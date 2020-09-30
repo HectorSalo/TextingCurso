@@ -1,6 +1,7 @@
 package com.skysam.hchirinos.textingcurso.common.model.dataAccess
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.skysam.hchirinos.textingcurso.common.pojo.User
 
 object FirebaseAuthenticationAPI {
@@ -23,6 +24,10 @@ object FirebaseAuthenticationAPI {
             user.uri = mFirebaseAuth!!.currentUser!!.photoUrl
         }
         return user
+    }
+
+    fun getCurrentUser() : FirebaseUser? {
+        return mFirebaseAuth!!.currentUser
     }
 }
 

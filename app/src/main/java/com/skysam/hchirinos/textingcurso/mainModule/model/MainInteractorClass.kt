@@ -18,7 +18,6 @@ class MainInteractorClass : MainInteractor {
 
     private var mAuthentication: Authentication = Authentication()
     private var mDatabase: FirestoreDatabase = FirestoreDatabase()
-    private var mMyUser: User? = null
 
     override fun subscribeToUserList() {
         mDatabase.subscribeToUserList(getCurrentUser().uid!!, object : UserEventListener {

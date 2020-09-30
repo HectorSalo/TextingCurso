@@ -53,7 +53,7 @@ class RequestAdapter (private var mUsers: ArrayList<User>, private var mListener
         holder.tvEmail.text = user.email
 
         val options = RequestOptions()
-        options.diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .error(R.drawable.ic_emoticon_sad)
             .placeholder(R.drawable.ic_emoticon_tongue)
 

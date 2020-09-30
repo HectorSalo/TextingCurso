@@ -126,10 +126,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, MainView {
             .setPositiveButton(getString(R.string.main_dialog_accept)) { _, _ ->
                 mPresenter.removedFriend(user.uid!!)
             }
-            .setNegativeButton(R.string.common_label_cancel
-            ) { _, _ ->
-
-            }
+            .setNegativeButton(R.string.common_label_cancel, null)
 
         builder.create()
         builder.show()
