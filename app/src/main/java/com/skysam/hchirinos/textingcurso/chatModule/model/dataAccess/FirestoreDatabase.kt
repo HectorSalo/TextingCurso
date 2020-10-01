@@ -5,6 +5,7 @@ import com.google.firebase.firestore.EventListener
 import com.skysam.hchirinos.textingcurso.R
 import com.skysam.hchirinos.textingcurso.chatModule.model.LastConnectionEventListener
 import com.skysam.hchirinos.textingcurso.chatModule.model.MessagesEventListener
+import com.skysam.hchirinos.textingcurso.chatModule.model.SendMessageListener
 import com.skysam.hchirinos.textingcurso.common.UtilsCommon
 import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseFirestoreAPI
 import com.skysam.hchirinos.textingcurso.common.pojo.Message
@@ -120,15 +121,30 @@ class FirestoreDatabase {
     fun sunUnreadMessages(myUid: String, friendUid: String) {
         FirebaseFirestoreAPI.getInstance().runTransaction { transaction ->
             val snapshot = transaction.get(getOneContactReference(friendUid, myUid))
-
-            val user = snapshot.toObject(User::class.java)
-            user!!.messageUnread = user.messageUnread + 1
-            //transaction.update(sfDocRef, "population", newPopulation)
-
+            val unreadMessages = snapshot.getDouble(UserConst.MESSAGES_UNREAD)
+            val newUnreadMessages: Int
+            newUnreadMessages = if (unreadMessages != null) {
+                unreadMessages.toInt() + 1
+            } else {
+                1
+            }
+            transaction.update(getOneContactReference(friendUid, myUid), UserConst.MESSAGES_UNREAD, newUnreadMessages)
 
             null
         }
             .addOnSuccessListener {  }
+            .addOnFailureListener {  }
+    }
+
+
+    fun sendMessage(msg: String?, photoUrl: String?, friendEmail: String, myUser: User, listener: SendMessageListener) {
+        val message = Message()
+        message.sender = myUser.email
+        message.msg = msg
+        message.photoUrl = photoUrl
+
+        getChatMessagesReference(myUser.email!!, friendEmail).add(message)
+            .addOnSuccessListener { listener.onSuccess() }
             .addOnFailureListener {  }
     }
 

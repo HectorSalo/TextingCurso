@@ -23,6 +23,7 @@ object UtilsCommon {
     const val ONLINE = true
     const val OFFLINE = false
     const val ONLINE_VALUE: Long = -1
+    const val RC_PHOTO_PICKER: Int = 22
 
     fun getEmailEncoded(email: String) : String {
         val preKey = email.replace("_", "__")

@@ -8,5 +8,5 @@ class ChatEvent {
     var resMsg: Int? = null
     var message : Message? = null
     var connected: Boolean? = null
-    var lastConnection: Boolean? = null
+    var lastConnection: Long? = null
 }
