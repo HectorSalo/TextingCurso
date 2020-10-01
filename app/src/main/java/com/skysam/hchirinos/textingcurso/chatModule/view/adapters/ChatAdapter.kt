@@ -34,7 +34,7 @@ class ChatAdapter(private var messages: ArrayList<Message>, private var listener
     }
 
     override fun onBindViewHolder(holder: ChatAdapter.ViewHolder, position: Int) {
-        
+
     }
 
     override fun getItemCount(): Int = messages.size
