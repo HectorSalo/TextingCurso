@@ -47,8 +47,8 @@ class ProfileInteractorClass : ProfileInteractor {
         })
     }
 
-    override fun updateImage(activity: Activity, uri: Uri, oldPhotoUrl: String) {
-        mStorage.uploadImageProfile(activity, uri, getCurrentUser().email!!, object : StorageUploadImageCallback{
+    override fun updateImage(uri: Uri, oldPhotoUrl: String) {
+        mStorage.uploadImageProfile(uri, getCurrentUser().email!!, object : StorageUploadImageCallback{
             override fun onSuccess(newUri: Uri) {
                 mDatabase.updatePhotoUrl(newUri, getCurrentUser().uid!!, object : StorageUploadImageCallback{
                     override fun onSuccess(newUri: Uri) {
@@ -60,7 +60,7 @@ class ProfileInteractorClass : ProfileInteractor {
                     }
                 })
 
-                mAuthentication.updateImageFirebaseProfile(uri, object : StorageUploadImageCallback{
+                mAuthentication.updateImageFirebaseProfile(newUri, object : StorageUploadImageCallback{
                     override fun onSuccess(newUri: Uri) {
                         mStorage.deleteOldImage(oldPhotoUrl, newUri.toString())
                     }

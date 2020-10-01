@@ -13,7 +13,7 @@ interface ProfilePresenter {
     fun checkMode()
 
     fun updateUsername(username: String)
-    fun updateImage(activity: Activity, uri: Uri)
+    fun updateImage(uri: Uri)
 
     fun result(requestCode: Int, resultCode: Int, data: Intent?)
 

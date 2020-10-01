@@ -1,5 +1,6 @@
 package com.skysam.hchirinos.textingcurso.mainModule.view
 
+import android.app.ActivityOptions
 import android.app.NotificationManager
 import android.content.Context
 import android.content.DialogInterface
@@ -17,6 +18,7 @@ import com.skysam.hchirinos.textingcurso.R
 import com.skysam.hchirinos.textingcurso.addModule.view.AddFragment
 import com.skysam.hchirinos.textingcurso.common.UtilsCommon
 import com.skysam.hchirinos.textingcurso.common.pojo.User
+import com.skysam.hchirinos.textingcurso.common.pojo.UserConst
 import com.skysam.hchirinos.textingcurso.databinding.ActivityMainBinding
 import com.skysam.hchirinos.textingcurso.databinding.DialogAboutBinding
 import com.skysam.hchirinos.textingcurso.loginModule.view.LoginActivity
@@ -25,6 +27,7 @@ import com.skysam.hchirinos.textingcurso.mainModule.MainPresenterClass
 import com.skysam.hchirinos.textingcurso.mainModule.view.adapters.OnItemClickListener
 import com.skysam.hchirinos.textingcurso.mainModule.view.adapters.RequestAdapter
 import com.skysam.hchirinos.textingcurso.mainModule.view.adapters.UserAdapter
+import com.skysam.hchirinos.textingcurso.profileModule.view.ProfileActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -35,6 +38,10 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, MainView {
     private lateinit var mRequestAdapter: RequestAdapter
     private lateinit var mUser: User
     private lateinit var mPresenter: MainPresenter
+
+    object Const {
+        const val RC_PROFILE = 23
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +65,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, MainView {
         binding.includeMain.rvRequests.layoutManager = LinearLayoutManager(this)
         binding.includeMain.rvRequests.adapter = mRequestAdapter
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             AddFragment().show(supportFragmentManager, getString(R.string.addFriend_title))
         }
     }
@@ -76,9 +83,38 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, MainView {
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             }
+            R.id.action_profile -> {
+                val intentProfile = Intent(this, ProfileActivity::class.java)
+                intentProfile.putExtra(UserConst.USERNAME, mUser.username)
+                intentProfile.putExtra(UserConst.EMAIL, mUser.email)
+                intentProfile.putExtra(UserConst.PHOTO_URL, mUser.getPhotoValid())
+
+                startActivityForResult(intentProfile, Const.RC_PROFILE,
+                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+            }
             R.id.action_about -> openAbout()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == RESULT_OK) {
+            when(requestCode) {
+                Const.RC_PROFILE -> {
+                    if (data != null) {
+                        mUser.username = data.getStringExtra(UserConst.USERNAME)
+                        mUser.photoUrl = data.getStringExtra(UserConst.PHOTO_URL)
+
+                        binding.toolbar.title = mUser.getUsernameValid()
+                        UtilsCommon.loadImage(this, mUser.getPhotoValid()!!, binding.imgProfile)
+                        setSupportActionBar(binding.toolbar)
+                    }
+                }
+            }
+        }
+
     }
 
     private fun openAbout() {

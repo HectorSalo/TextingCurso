@@ -11,7 +11,7 @@ import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseStorage
 class Storage {
     private val mStorageAPI : FirebaseStorage = FirebaseStorage.getInstance()
 
-    fun uploadImageProfile(activity: Activity, imageUri: Uri, email: String, callback: StorageUploadImageCallback) {
+    fun uploadImageProfile(imageUri: Uri, email: String, callback: StorageUploadImageCallback) {
         if (imageUri.lastPathSegment != null) {
             val photoRef: StorageReference = FirebaseStorageAPI.getPhotosReferenceByEmail(email)
                 .child(StorageConst.PATH_PROFILE).child(imageUri.lastPathSegment!!)
@@ -31,11 +31,15 @@ class Storage {
     }
 
     fun deleteOldImage(oldPhotoUrl: String, downloadUrl: String) {
-        if (!oldPhotoUrl.isNullOrEmpty()) {
+        if (oldPhotoUrl.isNotEmpty()) {
             val storageReference = FirebaseStorageAPI.getInstance().getReferenceFromUrl(downloadUrl)
-            val oldStorageReference = FirebaseStorageAPI.getInstance().getReferenceFromUrl(oldPhotoUrl)
+            var oldStorageReference: StorageReference? = null
+            try {
+                oldStorageReference = FirebaseStorageAPI.getInstance().getReferenceFromUrl(oldPhotoUrl)
+            } catch (e: Exception) {
+            }
 
-            if (!oldStorageReference.path.equals(storageReference.root)) {
+            if (oldStorageReference!= null && !oldStorageReference.path.equals(storageReference.root)) {
                 oldStorageReference.delete()
             }
         }

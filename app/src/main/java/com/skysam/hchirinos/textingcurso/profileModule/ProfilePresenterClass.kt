@@ -55,17 +55,17 @@ class ProfilePresenterClass (private var mView: ProfileView?): ProfilePresenter{
         }
     }
 
-    override fun updateImage(activity: Activity, uri: Uri) {
+    override fun updateImage(uri: Uri) {
         if (setProgress()) {
             mView!!.showProgressImage()
-            mInteractor.updateImage(activity, uri, mUser.photoUrl!!)
+            mInteractor.updateImage(uri, mUser.photoUrl!!)
         }
     }
 
-    override fun result(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun result(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when(requestCode) {
-                ProfileActivity.Const.RC_PHOTO_PICKER -> mView!!.openDialogPreview(data)
+                ProfileActivity.Const.RC_PHOTO_PICKER -> mView!!.openDialogPreview(data!!)
             }
         }
     }

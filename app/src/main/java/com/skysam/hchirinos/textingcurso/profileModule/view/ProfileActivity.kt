@@ -2,12 +2,14 @@ package com.skysam.hchirinos.textingcurso.profileModule.view
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -21,6 +23,7 @@ import com.skysam.hchirinos.textingcurso.R
 import com.skysam.hchirinos.textingcurso.common.UtilsCommon
 import com.skysam.hchirinos.textingcurso.common.pojo.UserConst
 import com.skysam.hchirinos.textingcurso.databinding.ActivityProfileBinding
+import com.skysam.hchirinos.textingcurso.databinding.DialogImageUploadPreviewBinding
 import com.skysam.hchirinos.textingcurso.profileModule.ProfilePresenter
 import com.skysam.hchirinos.textingcurso.profileModule.ProfilePresenterClass
 
@@ -41,10 +44,12 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
 
         mPresenter = ProfilePresenterClass(this)
         mPresenter.onCreate()
-        mPresenter.setupUser(intent.getStringExtra(UserConst.USERNAME)!!, intent.getStringExtra(UserConst.EMAIL)!!,
-            intent.getStringExtra(UserConst.PHOTO_URL)!!)
+        mPresenter.setupUser(intent.getStringExtra(UserConst.USERNAME)!!, intent.getStringExtra(UserConst.EMAIL)!!, intent.getStringExtra(UserConst.PHOTO_URL)!!)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.btnEditPhoto.setOnClickListener { mPresenter.checkMode() }
+        binding.imgProfile.setOnClickListener { mPresenter.checkMode() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -54,13 +59,7 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            android.R.id.home -> {
-                if (UtilsCommon.hasMaterialDesing()) {
-                    finishAfterTransition()
-                } else {
-                    finish()
-                }
-            }
+            android.R.id.home -> finishAfterTransition()
             R.id.action_save_profile -> {
                 mCurrentMenuItem = item
                 if (!binding.etUsername.text.isNullOrEmpty()) {
@@ -93,7 +92,7 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
                     target: Target<Bitmap>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    //hideProgressImage()
+                    hideProgressImage()
                     binding.imgProfile.setImageDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.ic_upload))
                     return true
                 }
@@ -105,7 +104,7 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    //hideProgressImage()
+                    hideProgressImage()
                     binding.imgProfile.setImageBitmap(resource)
                     return true
                 }
@@ -156,7 +155,30 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
     }
 
     override fun openDialogPreview(data: Intent) {
-        TODO("Not yet implemented")
+        val urlLocal = data.dataString
+
+        val bindingDialog = DialogImageUploadPreviewBinding.inflate(layoutInflater)
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.profile_dialog_title)
+            .setView(bindingDialog.root)
+            .setPositiveButton(R.string.profile_dialog_accept) { _, _ ->
+                mPresenter.updateImage(Uri.parse(urlLocal))
+                Snackbar.make(binding.contentMain, R.string.profile_message_imageUploading, Snackbar.LENGTH_LONG).show()
+            }
+            .setNegativeButton(R.string.common_label_cancel, null)
+
+        val alertDialog = builder.create()
+        alertDialog.setOnShowListener {
+            val sizeImagePreview = resources.getDimensionPixelSize(R.dimen.chat_size_img_preview)
+            val bitmap = UtilsCommon.reduceBitmap(this@ProfileActivity, binding.contentMain, urlLocal, sizeImagePreview, sizeImagePreview)
+
+            if (bitmap != null) {
+                bindingDialog.imgDialog.setImageBitmap(bitmap)
+            }
+            bindingDialog.tvMessage.setText(R.string.profile_dialog_message)
+        }
+        alertDialog.show()
     }
 
     override fun menuEditMode() {
@@ -164,10 +186,8 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
     }
 
     override fun menuNormalMode() {
-        if (mCurrentMenuItem != null) {
-            mCurrentMenuItem.isEnabled = true
-            mCurrentMenuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_pencil)
-        }
+        mCurrentMenuItem.isEnabled = true
+        mCurrentMenuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_pencil)
     }
 
     override fun saveUsernameSuccess() {
@@ -180,20 +200,24 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
     }
 
     override fun setResultOK(username: String, photoUrl: String) {
-        
+        val data = Intent()
+        data.putExtra(UserConst.USERNAME, username)
+        data.putExtra(UserConst.PHOTO_URL, photoUrl)
+        setResult(RESULT_OK, data)
     }
 
     override fun onErrorUpload(resMsg: Int) {
-        TODO("Not yet implemented")
+        Snackbar.make(binding.contentMain, resMsg, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onError(resMsg: Int) {
-        TODO("Not yet implemented")
+        binding.etUsername.requestFocus()
+        binding.tfUsername.error = "$resMsg"
     }
 
     private fun setInputs(enable: Boolean) {
-        binding.etEmail.isEnabled = enable
+        binding.etUsername.isEnabled = enable
         binding.btnEditPhoto.visibility = if (enable) View.VISIBLE else View.GONE
-        if (mCurrentMenuItem != null) mCurrentMenuItem.isEnabled = enable
+        mCurrentMenuItem.isEnabled = enable
     }
 }

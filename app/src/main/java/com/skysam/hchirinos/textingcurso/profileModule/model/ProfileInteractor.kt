@@ -5,5 +5,5 @@ import android.net.Uri
 
 interface ProfileInteractor {
     fun updateUsername(username: String)
-    fun updateImage(activity: Activity, uri: Uri, oldPhotoUrl: String)
+    fun updateImage(uri: Uri, oldPhotoUrl: String)
 }
