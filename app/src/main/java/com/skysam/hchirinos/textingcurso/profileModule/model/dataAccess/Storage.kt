@@ -9,8 +9,6 @@ import com.skysam.hchirinos.textingcurso.common.model.StorageUploadImageCallback
 import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseStorageAPI
 
 class Storage {
-    private val mStorageAPI : FirebaseStorage = FirebaseStorage.getInstance()
-
     fun uploadImageProfile(imageUri: Uri, email: String, callback: StorageUploadImageCallback) {
         if (imageUri.lastPathSegment != null) {
             val photoRef: StorageReference = FirebaseStorageAPI.getPhotosReferenceByEmail(email)

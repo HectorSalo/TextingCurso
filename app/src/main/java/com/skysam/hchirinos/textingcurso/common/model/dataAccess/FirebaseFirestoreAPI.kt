@@ -1,12 +1,14 @@
 package com.skysam.hchirinos.textingcurso.common.model.dataAccess
 
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.*
 import com.google.firestore.v1.DocumentTransform
+import com.skysam.hchirinos.textingcurso.chatModule.model.dataAccess.FirestoreDatabaseConst
 import com.skysam.hchirinos.textingcurso.common.UtilsCommon
 import com.skysam.hchirinos.textingcurso.common.pojo.UserConst
+import java.sql.Timestamp
+import java.time.LocalDate.now
+import java.util.*
+
 
 object FirebaseFirestoreAPI {
     const val SEPARATOR = "___&___"
@@ -39,17 +41,25 @@ object FirebaseFirestoreAPI {
         return getInstance().collection(PATH_USERS)
     }
 
+    fun getChatsReference(keyChat: String) : DocumentReference {
+        return getInstance().collection(FirestoreDatabaseConst.PATH_CHATS).document(keyChat)
+    }
+
     fun updateMyLastConnection(online: Boolean, uid: String) {
         updateMyLastConnection(online, "", uid)
     }
 
     fun updateMyLastConnection(online: Boolean, uidFriend: String, uid: String) {
+
         val lastConnectionWith = "${UtilsCommon.ONLINE_VALUE}$SEPARATOR$uidFriend"
-        val timesTamp: String = FieldValue.serverTimestamp().toString()
 
-        val value = if (online) lastConnectionWith else timesTamp
+        if (online) {
+            getUserReferenceByUid(uid).update(UserConst.LAST_CONNECTION_WITH, lastConnectionWith)
+        } else {
+            getUserReferenceByUid(uid).update(UserConst.LAST_CONNECTION_WITH, FieldValue.serverTimestamp())
+        }
 
-        getUserReferenceByUid(uid).update(UserConst.LAST_CONNECTION_WITH, value)
+
     }
 
 }
