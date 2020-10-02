@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatActivity : AppCompatActivity(), onItemClickListener, ChatView {
+class ChatActivity : AppCompatActivity(), onItemClickListener, ChatView, OnImageZoom {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var mAdapter: ChatAdapter
@@ -173,11 +173,16 @@ class ChatActivity : AppCompatActivity(), onItemClickListener, ChatView {
     }
 
     override fun onImageLoaded() {
-
+        binding.includeContentChat.recyclerView.scrollToPosition(mAdapter.itemCount - 1)
     }
 
     override fun onClickIamge(message: Message) {
+        ImageZoomFragment().show(supportFragmentManager, getString(R.string.app_name))
+        messageSelected = message
+    }
 
+    override fun getMessageSelected(): Message {
+        return this.messageSelected
     }
 
     override fun showProgress() {
@@ -231,4 +236,5 @@ class ChatActivity : AppCompatActivity(), onItemClickListener, ChatView {
         }
         alertDialog.show()
     }
+
 }

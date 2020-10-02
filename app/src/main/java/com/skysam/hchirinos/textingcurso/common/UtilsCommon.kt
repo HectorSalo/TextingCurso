@@ -21,15 +21,28 @@ import kotlin.math.max
 
 object UtilsCommon {
 
-    const val RP_STORAGE = 23
     const val ONLINE = true
     const val OFFLINE = false
     const val ONLINE_VALUE: Long = -1
     const val RC_PHOTO_PICKER: Int = 22
 
+    const val RP_STORAGE = 23
+
+    const val METHOD = "method"
+    const val TITLE = "title"
+    const val MESSAGE = "message"
+    const val TOPIC = "topic"
+
+
     fun getEmailEncoded(email: String) : String {
         val preKey = email.replace("_", "__")
         return preKey.replace(".", "_")
+    }
+
+    fun getEmailToTopic(email: String): String {
+        var topic = getEmailEncoded(email)
+        topic = topic.replace("@", "_64")
+        return topic
     }
 
     fun loadImage(context: Context, url: String, target: ImageView) {
