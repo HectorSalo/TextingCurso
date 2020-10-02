@@ -3,6 +3,7 @@ package com.skysam.hchirinos.textingcurso.profileModule
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import com.skysam.hchirinos.textingcurso.common.UtilsCommon
 import com.skysam.hchirinos.textingcurso.common.pojo.User
 import com.skysam.hchirinos.textingcurso.profileModule.events.ProfileEvent
 import com.skysam.hchirinos.textingcurso.profileModule.events.ProfileEventConst
@@ -65,7 +66,7 @@ class ProfilePresenterClass (private var mView: ProfileView?): ProfilePresenter{
     override fun result(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when(requestCode) {
-                ProfileActivity.Const.RC_PHOTO_PICKER -> mView!!.openDialogPreview(data!!)
+                UtilsCommon.RC_PHOTO_PICKER -> mView!!.openDialogPreview(data!!)
             }
         }
     }

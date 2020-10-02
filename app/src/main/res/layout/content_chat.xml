@@ -51,11 +51,12 @@
 
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="@dimen/etMessage_height"
+            android:layout_marginEnd="@dimen/common_padding_small"
             android:inputType="textMultiLine"
-            android:layout_marginEnd="@dimen/common_padding_small"/>
+            android:maxHeight="@dimen/etMessage_height" />
 
     </LinearLayout>
 

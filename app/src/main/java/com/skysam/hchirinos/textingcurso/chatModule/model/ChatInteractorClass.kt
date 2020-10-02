@@ -17,7 +17,7 @@ import com.skysam.hchirinos.textingcurso.common.pojo.User
 import com.skysam.hchirinos.textingcurso.profileModule.events.ProfileEvent
 import org.greenrobot.eventbus.EventBus
 
-class ChatInteractoClass: ChatInteractor {
+class ChatInteractorClass: ChatInteractor {
     private var mDatabase: FirestoreDatabase = FirestoreDatabase()
     private var mStorage: Storage = Storage()
 
@@ -43,6 +43,8 @@ class ChatInteractoClass: ChatInteractor {
                 uidConnectedFriend: String
             ) {
                 postStatusFriend(online, lastConnection)
+                mUidConnectedFriend = uidConnectedFriend
+                mLastConnectionFriend = lastConnection
             }
         })
 
@@ -65,6 +67,7 @@ class ChatInteractoClass: ChatInteractor {
                 post(ChatEventConst.ERROR_SERVER, resMsg)
             }
         })
+        FirebaseFirestoreAPI.updateMyLastConnection(UtilsCommon.ONLINE, mFriendUid, getCurrentUser().uid!!)
     }
 
     override fun unsubscribeToMessages() {
@@ -81,6 +84,7 @@ class ChatInteractoClass: ChatInteractor {
         object : StorageUploadImageCallback{
             override fun onSuccess(newUri: Uri) {
                 sendMessage(null, newUri.toString())
+                postUploadSucces()
             }
 
             override fun onError(resMsg: Int) {
@@ -94,9 +98,16 @@ class ChatInteractoClass: ChatInteractor {
         mDatabase.sendMessage(msg, photoUrl, mFriendEmail, getCurrentUser(),
             object : SendMessageListener {
                 override fun onSuccess() {
-                    if (mUidConnectedFriend == getCurrentUser().uid) mDatabase.sunUnreadMessages(getCurrentUser().uid!!, mFriendUid)
+                    if (mUidConnectedFriend != getCurrentUser().uid) {
+                        mDatabase.sunUnreadMessages(getCurrentUser().uid!!, mFriendUid)
+                    }
                 }
             })
+    }
+
+
+    private fun postUploadSucces() {
+        post(ChatEventConst.IMAGE_UPLOAD_SUCCESS, 0, null, false, 0)
     }
 
 

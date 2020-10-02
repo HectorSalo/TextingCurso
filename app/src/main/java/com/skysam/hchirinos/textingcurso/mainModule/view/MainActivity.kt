@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skysam.hchirinos.textingcurso.R
 import com.skysam.hchirinos.textingcurso.addModule.view.AddFragment
+import com.skysam.hchirinos.textingcurso.chatModule.view.ChatActivity
 import com.skysam.hchirinos.textingcurso.common.UtilsCommon
 import com.skysam.hchirinos.textingcurso.common.pojo.User
 import com.skysam.hchirinos.textingcurso.common.pojo.UserConst
@@ -152,7 +153,13 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, MainView {
     }
 
     override fun onItemClick(user: User) {
-        TODO("Not yet implemented")
+        val intent = Intent(this, ChatActivity::class.java)
+        intent.putExtra(UserConst.UID, user.uid)
+        intent.putExtra(UserConst.USERNAME, user.username)
+        intent.putExtra(UserConst.EMAIL, user.email)
+        intent.putExtra(UserConst.PHOTO_URL, user.getPhotoValid())
+
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
     override fun onItemLongClick(user: User) {

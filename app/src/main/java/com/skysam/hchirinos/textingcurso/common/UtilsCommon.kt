@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatEditText
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -20,6 +21,7 @@ import kotlin.math.max
 
 object UtilsCommon {
 
+    const val RP_STORAGE = 23
     const val ONLINE = true
     const val OFFLINE = false
     const val ONLINE_VALUE: Long = -1
@@ -81,5 +83,9 @@ object UtilsCommon {
                 }
             }
         }
+    }
+
+    fun validateMessage(etMessage: AppCompatEditText): Boolean {
+        return etMessage.text != null && etMessage.text!!.isNotEmpty()
     }
 }

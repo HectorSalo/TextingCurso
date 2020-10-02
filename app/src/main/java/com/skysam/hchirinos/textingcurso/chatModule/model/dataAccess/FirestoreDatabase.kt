@@ -106,15 +106,7 @@ class FirestoreDatabase {
 
 
     fun setMessageRead(myUid: String, friendUid: String) {
-        getOneContactReference(myUid, friendUid).addSnapshotListener { value, error ->
-            if (error != null) {
-                return@addSnapshotListener
-            }
-
-            if (value != null && value.exists()) {
-                getOneContactReference(myUid, friendUid).update(UserConst.MESSAGES_UNREAD, 0)
-            }
-        }
+        getOneContactReference(myUid, friendUid).update(UserConst.MESSAGES_UNREAD, 0)
     }
 
 

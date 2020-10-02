@@ -5,17 +5,16 @@ import android.content.Intent
 import android.net.Uri
 import com.skysam.hchirinos.textingcurso.chatModule.events.ChatEvent
 import com.skysam.hchirinos.textingcurso.chatModule.events.ChatEventConst
-import com.skysam.hchirinos.textingcurso.chatModule.model.ChatInteractoClass
+import com.skysam.hchirinos.textingcurso.chatModule.model.ChatInteractorClass
 import com.skysam.hchirinos.textingcurso.chatModule.model.ChatInteractor
 import com.skysam.hchirinos.textingcurso.chatModule.view.ChatView
 import com.skysam.hchirinos.textingcurso.common.UtilsCommon
-import com.skysam.hchirinos.textingcurso.mainModule.events.MainEventConst
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
 class ChatPresenterClass(private var mView: ChatView?): ChatPresenter {
 
-    private val mInteractor: ChatInteractor = ChatInteractoClass()
+    private val mInteractor: ChatInteractor = ChatInteractorClass()
     private lateinit var mFriendUid: String
     private lateinit var mFriendEmail: String
 
@@ -60,9 +59,9 @@ class ChatPresenterClass(private var mView: ChatView?): ChatPresenter {
         }
     }
 
-    override fun result(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun result(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == UtilsCommon.RC_PHOTO_PICKER && resultCode == Activity.RESULT_OK) {
-            mView!!.openDialogPreview(data)
+            mView!!.openDialogPreview(data!!)
         }
     }
 

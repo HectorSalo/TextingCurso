@@ -40,6 +40,10 @@ class FirestoreDatabase {
     private fun getUser(value: DocumentChange): User {
         val user = value.document.toObject(User::class.java)
         user.uid = value.document.id
+        user.username = value.document.getString(UserConst.USERNAME)
+        user.photoUrl = value.document.getString(UserConst.PHOTO_URL)
+        user.email = value.document.getString(UserConst.EMAIL)
+        user.messageUnread = if (value.document.getDouble(UserConst.MESSAGES_UNREAD) != null) value.document.getDouble(UserConst.MESSAGES_UNREAD)!!.toInt() else -1
         return user
     }
 

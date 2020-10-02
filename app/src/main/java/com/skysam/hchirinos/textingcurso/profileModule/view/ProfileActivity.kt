@@ -33,10 +33,6 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
     private lateinit var mCurrentMenuItem: MenuItem
     private lateinit var mPresenter: ProfilePresenter
 
-    object Const {
-        const val RC_PHOTO_PICKER = 22
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -151,7 +147,7 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
 
     override fun launchGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, Const.RC_PHOTO_PICKER)
+        startActivityForResult(intent, UtilsCommon.RC_PHOTO_PICKER)
     }
 
     override fun openDialogPreview(data: Intent) {

@@ -17,7 +17,7 @@ interface ChatPresenter {
 
     fun sendImage(activity: Activity, imageUri: Uri)
 
-    fun result(requestCode: Int, resultCode: Int, data: Intent)
+    fun result(requestCode: Int, resultCode: Int, data: Intent?)
 
     fun onEventListener(event: ChatEvent)
 }
