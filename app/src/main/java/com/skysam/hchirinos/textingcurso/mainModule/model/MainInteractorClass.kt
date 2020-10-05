@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.skysam.hchirinos.textingcurso.common.UtilsCommon
 import com.skysam.hchirinos.textingcurso.common.model.BasicEventsCallback
 import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseAuthenticationAPI
+import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseCloudMessagingAPI
 import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseFirestoreAPI
 import com.skysam.hchirinos.textingcurso.common.pojo.User
 import com.skysam.hchirinos.textingcurso.loginModule.events.LoginEvent
@@ -69,6 +70,7 @@ class MainInteractorClass : MainInteractor {
     }
 
     override fun signOff() {
+        FirebaseCloudMessagingAPI.unsubscribeToMyTopic(getCurrentUser().email!!)
         mAuthentication.signOff()
     }
 

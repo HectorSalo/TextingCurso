@@ -2,6 +2,7 @@ package com.skysam.hchirinos.textingcurso.loginModule.model
 
 import com.google.firebase.auth.FirebaseUser
 import com.skysam.hchirinos.textingcurso.common.model.EventErrorTypeListener
+import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseCloudMessagingAPI
 import com.skysam.hchirinos.textingcurso.loginModule.events.LoginEvent
 import com.skysam.hchirinos.textingcurso.loginModule.events.LoginEventConst
 import com.skysam.hchirinos.textingcurso.loginModule.model.dataAccess.Authentication
@@ -34,8 +35,8 @@ class LoginInteractorClass : LoginInteractor {
                             post(typeEvent)
                         }
                     }
-
                 })
+                FirebaseCloudMessagingAPI.subscribeToMyTopic(user.email!!)
             }
 
             override fun onLaunchUILogin() {

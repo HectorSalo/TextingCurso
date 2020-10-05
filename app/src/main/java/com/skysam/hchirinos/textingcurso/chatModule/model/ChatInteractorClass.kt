@@ -7,8 +7,10 @@ import com.skysam.hchirinos.textingcurso.chatModule.events.ChatEvent
 import com.skysam.hchirinos.textingcurso.chatModule.events.ChatEventConst
 
 import com.skysam.hchirinos.textingcurso.chatModule.model.dataAccess.FirestoreDatabase
+import com.skysam.hchirinos.textingcurso.chatModule.model.dataAccess.NotificationRS
 import com.skysam.hchirinos.textingcurso.chatModule.model.dataAccess.Storage
 import com.skysam.hchirinos.textingcurso.common.UtilsCommon
+import com.skysam.hchirinos.textingcurso.common.model.EventErrorTypeListener
 import com.skysam.hchirinos.textingcurso.common.model.StorageUploadImageCallback
 import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseAuthenticationAPI
 import com.skysam.hchirinos.textingcurso.common.model.dataAccess.FirebaseFirestoreAPI
@@ -100,6 +102,15 @@ class ChatInteractorClass: ChatInteractor {
                 override fun onSuccess() {
                     if (mUidConnectedFriend != getCurrentUser().uid) {
                         mDatabase.sunUnreadMessages(getCurrentUser().uid!!, mFriendUid)
+
+                        if (mLastConnectionFriend != UtilsCommon.ONLINE_VALUE) {
+                            NotificationRS.sendNotification(getCurrentUser().username!!, msg!!, mFriendEmail,
+                            getCurrentUser().uid!!, getCurrentUser().email!!, getCurrentUser().uri!!, object : EventErrorTypeListener {
+                                    override fun onError(typeEvent: Int, reaMsg: Int) {
+                                        post(typeEvent, reaMsg)
+                                    }
+                                })
+                        }
                     }
                 }
             })

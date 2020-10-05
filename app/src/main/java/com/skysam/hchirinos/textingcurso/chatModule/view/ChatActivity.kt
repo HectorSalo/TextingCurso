@@ -113,7 +113,12 @@ class ChatActivity : AppCompatActivity(), onItemClickListener, ChatView, OnImage
 
     override fun onResume() {
         super.onResume()
-        mPresenter.onResume()
+        if (UtilsCommon.isOnline(this)) {
+            mPresenter.onResume()
+        } else {
+            Snackbar.make(binding.contentMain, R.string.common_message_noInternet, Snackbar.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun onPause() {
