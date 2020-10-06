@@ -38,6 +38,7 @@ class AddPresenterClass(private var mView: AddView?) : AddPresenter{
             when(event.typeEvent) {
                 AddEventConst.SEND_REQUEST_SUCCESS -> mView!!.friendAdded()
                 AddEventConst.ERROR_SERVER -> mView!!.friendNotAdded()
+                AddEventConst.ERROR_EXIST -> mView!!.showMessageExist(event.resMsg!!)
             }
         }
     }

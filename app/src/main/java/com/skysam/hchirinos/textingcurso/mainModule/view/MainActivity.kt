@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skysam.hchirinos.textingcurso.R
 import com.skysam.hchirinos.textingcurso.addModule.view.AddFragment
@@ -29,6 +31,7 @@ import com.skysam.hchirinos.textingcurso.mainModule.view.adapters.OnItemClickLis
 import com.skysam.hchirinos.textingcurso.mainModule.view.adapters.RequestAdapter
 import com.skysam.hchirinos.textingcurso.mainModule.view.adapters.UserAdapter
 import com.skysam.hchirinos.textingcurso.profileModule.view.ProfileActivity
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -66,9 +69,31 @@ class MainActivity : AppCompatActivity(), OnItemClickListener, MainView {
         binding.includeMain.rvRequests.layoutManager = LinearLayoutManager(this)
         binding.includeMain.rvRequests.adapter = mRequestAdapter
 
+        configTutorial();
+
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
             AddFragment().show(supportFragmentManager, getString(R.string.addFriend_title))
         }
+    }
+
+    private fun configTutorial() {
+        MaterialShowcaseView.Builder(this)
+            .setTitleTextColor(ContextCompat.getColor(this, R.color.colorAccent))
+            .setContentTextColor(ContextCompat.getColor(this, R.color.blue_a100))
+            .setDismissTextColor(ContextCompat.getColor(this, android.R.color.white))
+            .setMaskColour(ContextCompat.getColor(this, R.color.gray_900))
+            .setTarget(binding.fab)
+            .setTargetTouchable(true)
+            .setTitleText(R.string.app_name)
+            .setContentText(R.string.main_tuto_message)
+            .setDismissText(R.string.main_tuto_ok)
+            .setDismissStyle(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC))
+            .singleUse(getString(R.string.main_tuto_fabAdd))
+            .setDelay(2000)
+            .setFadeDuration(600)
+            .setDismissOnTargetTouch(true)
+            .setDismissOnTouch(false)
+            .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

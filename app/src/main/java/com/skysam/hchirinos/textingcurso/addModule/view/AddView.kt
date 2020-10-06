@@ -8,4 +8,5 @@ interface AddView {
 
     fun friendAdded()
     fun friendNotAdded()
+    fun showMessageExist(resMsg: Int)
 }

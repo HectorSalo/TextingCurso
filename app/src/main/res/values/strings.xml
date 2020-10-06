@@ -77,4 +77,8 @@
     <string name="title_activity_chat">Chat</string>
     <string name="chat_status_last_connection">Última conexión: %s</string>
     <string name="method_not_exist">Error. Método no existe</string>
+    <string name="main_tuto_message">Botón para agregar contactos con su email</string>
+    <string name="main_tuto_ok">Entendido</string>
+    <string name="main_tuto_fabAdd">addFab01</string>
+    <string name="addFriend_error_user_exist">El usuario no existe</string>
 </resources>

@@ -105,4 +105,9 @@ class AddFragment : DialogFragment(), DialogInterface.OnShowListener, AddView {
         binding.etEmail.requestFocus()
     }
 
+    override fun showMessageExist(resMsg: Int) {
+        binding.tfEmail.error = getString(resMsg)
+        binding.etEmail.requestFocus()
+    }
+
 }
