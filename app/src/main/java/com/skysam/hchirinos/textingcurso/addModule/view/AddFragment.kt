@@ -12,9 +12,11 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.skysam.hchirinos.textingcurso.R
 import com.skysam.hchirinos.textingcurso.addModule.AddPresenter
 import com.skysam.hchirinos.textingcurso.addModule.AddPresenterClass
+import com.skysam.hchirinos.textingcurso.common.UtilsCommon
 import com.skysam.hchirinos.textingcurso.databinding.DialogAboutBinding
 import com.skysam.hchirinos.textingcurso.databinding.FragmentAddBinding
 
@@ -27,6 +29,7 @@ class AddFragment : DialogFragment(), DialogInterface.OnShowListener, AddView {
     private lateinit var positiveButton : Button
 
     private lateinit var mPresenter: AddPresenter
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -41,6 +44,7 @@ class AddFragment : DialogFragment(), DialogInterface.OnShowListener, AddView {
 
         val dialog: AlertDialog = builder.create()
         dialog.setOnShowListener(this)
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity())
         return dialog
     }
 
@@ -97,6 +101,11 @@ class AddFragment : DialogFragment(), DialogInterface.OnShowListener, AddView {
 
     override fun friendAdded() {
         Toast.makeText(requireActivity(), R.string.addFriend_message_request_dispatched, Toast.LENGTH_SHORT).show()
+
+        val bundle = Bundle()
+        bundle.putString(UtilsCommon.PARAM_CONTEXT, AddFragment::class.java.name)
+        mFirebaseAnalytics.logEvent(UtilsCommon.ADD_FRIEND, bundle)
+
         dismiss()
     }
 

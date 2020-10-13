@@ -36,6 +36,9 @@ object UtilsCommon {
     const val TOPIC = "topic"
     const val SUCCESS = "success"
 
+    const val PARAM_CONTEXT = "param_context"
+    const val ADD_FRIEND = "add_friend"
+
 
     fun getEmailEncoded(email: String) : String {
         val preKey = email.replace("_", "__")
